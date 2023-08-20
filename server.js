@@ -9,7 +9,6 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 
 dotenv.config();
-connectDB();
 
 // ESmodule
 const __filename = fileURLToPath(import.meta.url);
@@ -52,6 +51,7 @@ app.use("*", function(req, res){
   res.sendFile(path.join(__dirname, "./client/build/index.html"))
 })
 
-server.listen(PORT, () => {
+connectDB().then(
+  server.listen(PORT, () => {
   console.log(`Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`);
-});
+}));
