@@ -425,6 +425,12 @@ export const updateMessagesController = async (req, res) => {
     chat.messages.push(newMessage);
     await chat.save();
 
+    res.status(200).json({
+      success: true,
+      message: "Message added successfully",
+      chats: chat,
+    });
+
     // Pusher configuration
     const pusher = new Pusher({
       appId: process.env.PUSHER_APP_ID,
@@ -434,21 +440,13 @@ export const updateMessagesController = async (req, res) => {
       useTLS: true
     });
 
-    const recipientsChannel = `private-${chatId}`;
-
     // Trigger an event on the Pusher channel
-    pusher.trigger(recipientsChannel, 'client-receive-message', {
+    pusher.trigger(`private-${chatId}`, 'client-receive-message', {
       sender,
       content,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     });
 
-
-    res.status(200).json({
-      success: true,
-      message: "Message added successfully",
-      chats: chat,
-    });
   } catch (error) {
     res.status(500).json({ error: "Failed to add message" });
   }
