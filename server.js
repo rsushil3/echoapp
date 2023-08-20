@@ -21,7 +21,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(cors({
-  origin: 'https://echoapp.cyclic.app'
+  origin: 'https://echoapp.cyclic.cloud'
 }));
 
 app.use(express.json({ limit: '10mb' }));
