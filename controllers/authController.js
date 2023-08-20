@@ -4,6 +4,9 @@ import JWT from "jsonwebtoken";
 import fs from "fs";
 import chatModel from "../models/chatModel.js";
 import Pusher from 'pusher'; // Import the Pusher library
+import dotenv from 'dotenv'
+//configure env
+dotenv.config();
 
 
 // register user by signup
