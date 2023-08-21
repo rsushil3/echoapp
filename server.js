@@ -31,6 +31,12 @@ app.use(express.static(path.join(__dirname, './client/build')))
 //routes
 app.use("/api/auth", authRoutes);
 
+
+//rest api
+app.use("*", function(req, res){
+  res.sendFile(path.join(__dirname, "./client/build/index.html"))
+})
+
 // Pusher configuration
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
@@ -56,11 +62,6 @@ app.post('/messages/:chatId', (req, res) => {
     content
   });
 });
-
-//rest api
-app.use("*", function(req, res){
-  res.sendFile(path.join(__dirname, "./client/build/index.html"))
-})
 
 
 
