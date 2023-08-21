@@ -21,6 +21,11 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
+//rest api
+app.use("*", function(req, res){
+  res.sendFile(path.join(__dirname, "./client/build/index.html"))
+})
+
 // Pusher configuration
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
