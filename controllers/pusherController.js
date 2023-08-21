@@ -9,23 +9,6 @@ const pusher = new Pusher({
   useTLS: true
 });
 
-//Pusher Auth
-export const authController = async (req, res) => {
-  try {
-    const socketId = req.body.socket_id;
-    const channel = req.body.channel_name;
-    const auth = pusher.authorizeChannel(socketId, channel);
-    res.send(auth);
-
-  } catch (error) {
-    res.status(200).send({
-      success: "false",
-      message: "Error while Authorization Pusher",
-      error: error.message,
-    });
-  }
-};
-
 //Pusher Messages Api
 export const messagesController = async (req, res) => {
   try {
