@@ -55,6 +55,7 @@ app.post('/messages/:chatId', (req, res) => {
 app.use(express.static(path.join(__dirname, './client/build')));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/pusher", pusherRoutes);
 
 //rest api
 app.use("*", function(req, res){
