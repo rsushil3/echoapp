@@ -27,11 +27,6 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(express.static(path.join(__dirname, './client/build')))
 
-//rest api
-app.use("*", function(req, res){
-  res.sendFile(path.join(__dirname, "./client/build/index.html"))
-})
-
 // Pusher configuration
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
@@ -60,6 +55,11 @@ app.post('/messages/:chatId', (req, res) => {
 
 
 app.use("/api/auth", authRoutes);
+
+//rest api
+app.use("*", function(req, res){
+  res.sendFile(path.join(__dirname, "./client/build/index.html"))
+})
 
 connectDB().then(server.listen(PORT, () => {
   console.log(`Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`);
