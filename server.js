@@ -9,7 +9,6 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 
 dotenv.config();
-connectDB();
 
 const PORT = process.env.PORT || 8000;
 
@@ -62,6 +61,6 @@ app.post('/messages/:chatId', (req, res) => {
 
 app.use("/api/auth", authRoutes);
 
-server.listen(PORT, () => {
+connectDB().then(server.listen(PORT, () => {
   console.log(`Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`);
-});
+}));
