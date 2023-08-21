@@ -30,7 +30,6 @@ app.use(express.static(path.join(__dirname, './client/build')))
 
 //routes
 app.use("/api/auth", authRoutes);
-app.use("/api/pusher", pusherRoutes);
 
 // Pusher configuration
 const pusher = new Pusher({
