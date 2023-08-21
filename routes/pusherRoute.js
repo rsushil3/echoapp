@@ -5,12 +5,12 @@ import {
 } from "../controllers/pusherController.js";
 
 //router object
-const router = express.Router();
+const pusherRouter = express.Router();
 
 //Pusher Auth || POST
-router.post('/auth', authController);
+pusherRouter.post('/auth', authController);
 
 //Send Messages to pusher API || POST
-router.post("/messages/:chatId", messagesController);
+pusherRouter.post("/messages/:chatId", messagesController);
 
-export default router;
+export default pusherRouter;
