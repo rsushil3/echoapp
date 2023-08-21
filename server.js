@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
-import pusherRoutes from "./routes/pusherRoute.js";
 import Pusher from 'pusher'; // Import the Pusher library
 import cors from "cors";
 import path from 'path';
@@ -47,6 +46,16 @@ app.post('/pusher/auth', (req, res) => {
   const channel = req.body.channel_name;
   const auth = pusher.authorizeChannel(socketId, channel);
   res.send(auth);
+});
+
+app.post('/messages/:chatId', (req, res) => {
+  const chatId = req.params.chatId;
+  const { sender, content } = req.body;
+  // Trigger an event on the Pusher channel
+  pusher.trigger(`private-${chatId}`, 'client-receive-message', {
+    sender,
+    content
+  });
 });
 
 //rest api
