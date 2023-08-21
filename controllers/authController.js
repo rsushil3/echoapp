@@ -431,7 +431,10 @@ export const updateMessagesController = async (req, res) => {
       chats: chat,
     });
 
-    // Pusher configuration
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add message" });
+  } finally{
+     // Pusher configuration
     const pusher = new Pusher({
       appId: process.env.PUSHER_APP_ID,
       key: process.env.PUSHER_KEY,
@@ -446,10 +449,8 @@ export const updateMessagesController = async (req, res) => {
       content,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     });
-
-  } catch (error) {
-    res.status(500).json({ error: "Failed to add message" });
   }
+    
 };
 
 
