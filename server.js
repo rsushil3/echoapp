@@ -42,6 +42,16 @@ app.post('/pusher/auth', (req, res) => {
   res.send(auth);
 });
 
+app.post('/messages/:chatId', (req, res) => {
+  const chatId = req.params.chatId;
+  const { sender, content } = req.body;
+  // Trigger an event on the Pusher channel
+  pusher.trigger(`private-${chatId}`, 'client-receive-message', {
+    sender,
+    content
+  });
+});
+
 app.use(express.static(path.join(__dirname, './client/build')));
 
 app.use("/api/auth", authRoutes);
