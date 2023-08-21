@@ -1,41 +1,25 @@
-import express from "express";
-import dotenv from "dotenv";
+import express from 'express';
+import dotenv from 'dotenv';
+import http from 'http';
+import Pusher from 'pusher'; // Import the Pusher library
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
-import Pusher from 'pusher'; // Import the Pusher library
 import cors from "cors";
-import path from 'path';
-import {fileURLToPath} from 'url';
 
-//PORT
-const PORT = process.env.PORT || 8000;
-
-//configure env
 dotenv.config();
-
-//databse config
 connectDB();
 
-// ESmodule
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const PORT = process.env.PORT || 8000;
 
-//rest object
 const app = express();
+const server = http.createServer(app);
 
-//middelwares
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, './client/build')))
+app.use(cors({
+  origin: 'https://echoapp.cyclic.cloud'
+}));
 
-//routes
-app.use("/api/auth", authRoutes);
-
-
-//rest api
-app.use("*", function(req, res){
-  res.sendFile(path.join(__dirname, "./client/build/index.html"))
-})
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Pusher configuration
 const pusher = new Pusher({
@@ -64,10 +48,8 @@ app.post('/messages/:chatId', (req, res) => {
 });
 
 
+app.use("/api/auth", authRoutes);
 
-//run listen
-app.listen(PORT, () => {
-  console.log(
-    `Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`
-  );
+server.listen(PORT, () => {
+  console.log(`Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`);
 });
