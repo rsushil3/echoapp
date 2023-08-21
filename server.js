@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
-import pusherRoutes from "./routes/pusherRoutes.js";
+import pusherRoutes from "./routes/pusherRoute.js";
 import cors from "cors";
 import path from 'path';
 import {fileURLToPath} from 'url';
