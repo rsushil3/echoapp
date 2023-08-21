@@ -8,6 +8,15 @@ import dotenv from 'dotenv'
 //configure env
 dotenv.config();
 
+// Pusher configuration
+    const pusher = new Pusher({
+      appId: process.env.PUSHER_APP_ID,
+      key: process.env.PUSHER_KEY,
+      secret: process.env.PUSHER_SECRET,
+      cluster: process.env.PUSHER_CLUSTER,
+      useTLS: true
+    });
+
 
 // register user by signup
 export const registerController = async (req, res) => {
@@ -111,21 +120,6 @@ export const loginController = async (req, res) => {
       },
       token,
     });
-
-    // Pusher configuration
-    const pusher = new Pusher({
-      appId: process.env.PUSHER_APP_ID,
-      key: process.env.PUSHER_KEY,
-      secret: process.env.PUSHER_SECRET,
-      cluster: process.env.PUSHER_CLUSTER,
-      useTLS: true
-    });
-    
-    pusher.trigger('user-status', 'status-updated', {
-      user: user._id,
-      status: true
-    });
-
   } catch (error) {
     res.status(200).send({
       success: false,
@@ -430,25 +424,15 @@ export const updateMessagesController = async (req, res) => {
       message: "Message added successfully",
       chats: chat,
     });
-
-  } catch (error) {
-    res.status(500).json({ error: "Failed to add message" });
-  } finally{
-     // Pusher configuration
-    const pusher = new Pusher({
-      appId: process.env.PUSHER_APP_ID,
-      key: process.env.PUSHER_KEY,
-      secret: process.env.PUSHER_SECRET,
-      cluster: process.env.PUSHER_CLUSTER,
-      useTLS: true
-    });
-
-    // Trigger an event on the Pusher channel
+     // Trigger an event on the Pusher channel
     pusher.trigger(`private-${chatId}`, 'client-receive-message', {
       sender,
       content,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     });
+
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add message" });
   }
     
 };
