@@ -5,11 +5,17 @@ import Pusher from 'pusher'; // Import the Pusher library
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import cors from "cors";
+import path from 'path';
+import {fileURLToPath} from 'url';
 
 dotenv.config();
 connectDB();
 
 const PORT = process.env.PORT || 8000;
+
+// ESmodule
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
@@ -20,6 +26,7 @@ app.use(cors({
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(express.static(path.join(__dirname, './client/build')))
 
 //rest api
 app.use("*", function(req, res){
