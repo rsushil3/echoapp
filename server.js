@@ -49,7 +49,8 @@ app.post('/messages/:chatId', (req, res) => {
   // Trigger an event on the Pusher channel
   pusher.trigger(`private-${chatId}`, 'client-receive-message', {
     sender,
-    content
+    content,
+    timestamp :new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
   });
 });
 
