@@ -46,13 +46,28 @@ app.post('/pusher/auth', (req, res) => {
 app.post('/messages/:chatId', (req, res) => {
   const chatId = req.params.chatId;
   const { sender, content } = req.body;
+
+  // Get the current date and time in IST
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+  const istTimestamp = new Date(Date.now() + istOffset);
+
+  // Format the timestamp as 'hh:mm AM/PM'
+  const formattedTimestamp = istTimestamp.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+
   // Trigger an event on the Pusher channel
   pusher.trigger(`private-${chatId}`, 'client-receive-message', {
     sender,
     content,
-    timestamp :new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
+    timestamp: formattedTimestamp, // Add the formatted timestamp to the message object
   });
+
+  res.status(200).json({ success: true });
 });
+
 
 
 app.use("/api/auth", authRoutes);
