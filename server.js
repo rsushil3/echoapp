@@ -64,8 +64,6 @@ app.post('/messages/:chatId', (req, res) => {
     content,
     timestamp: formattedTimestamp, // Add the formatted timestamp to the message object
   });
-
-  res.status(200).json({ success: true });
 });
 
 
